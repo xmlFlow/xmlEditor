@@ -1,0 +1,45 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-01-17T00:00:00-00:00\n"
+"PO-Revision-Date: 2025-01-17T00:00:00-00:00\n"
+"Language: \n"
+
+msgid "plugins.generic.xmlEditor.displayName"
+msgstr "XML Editor Plugin"
+
+msgid "plugins.generic.xmlEditor.description"
+msgstr "Lightweight plugin for editing XML files with media/image support."
+
+msgid "plugins.generic.xmlEditor.links.editWithXmlEditor"
+msgstr "Edit XML"
+
+msgid "plugins.generic.xmlEditor.name"
+msgstr "XML Editor"
+
+msgid "plugins.generic.xmlEditor.archive.noArticle"
+msgstr "No article file available"
+
+msgid "plugins.generic.xmlEditor.notification.saved"
+msgstr "Document saved successfully"
+
+msgid "plugins.generic.xmlEditor.notification.error"
+msgstr "An error occurred while saving"
+
+msgid "plugins.generic.xmlEditor.media.uploadSuccess"
+msgstr "Media uploaded successfully"
+
+msgid "plugins.generic.xmlEditor.media.uploadError"
+msgstr "Media upload failed"
+
+msgid "plugins.generic.xmlEditor.media.deleteSuccess"
+msgstr "Media deleted successfully"
+
+msgid "plugins.generic.xmlEditor.media.deleteError"
+msgstr "Media deletion failed"
