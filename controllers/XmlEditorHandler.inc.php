@@ -14,6 +14,9 @@
  */
 
 import('classes.handler.Handler');
+require_once __DIR__ . "/../lib/docxToJats/vendor/autoload.php";
+use docx2jats\DOCXArchive;
+use docx2jats\jats\Document;
 
 class XmlEditorHandler extends Handler {
 	/** @var Submission * */
@@ -32,7 +35,7 @@ class XmlEditorHandler extends Handler {
 		$this->_plugin = PluginRegistry::getPlugin('generic', XMLEDITOR_PLUGIN_NAME);
 		$this->addRoleAssignment(
 			array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR, ROLE_ID_ASSISTANT, ROLE_ID_REVIEWER, ROLE_ID_AUTHOR),
-			array('editor', 'json', 'media')
+			array('editor', 'json', 'media', 'convertWordToXml')
 		);
 	}
 
@@ -352,5 +355,150 @@ class XmlEditorHandler extends Handler {
 			}
 		}
 		return $genreId;
+	}
+
+	/**
+	 * Convert Word document to JATS XML
+	 * @param $args array
+	 * @param $request PKPRequest
+	 * @return JSONMessage
+	 */
+	public function convertWordToXml($args, $request) {
+		$submissionFileId = (int)$request->getUserVar('submissionFileId');
+		$submissionId = (int)$request->getUserVar('submissionId');
+		$stageId = (int)$request->getUserVar('stageId');
+
+		$submissionFile = Services::get('submissionFile')->get($submissionFileId);
+
+		if (!$submissionFile) {
+			return new JSONMessage(false, __('plugins.generic.xmlEditor.conversion.error'));
+		}
+
+		$submission = $this->getAuthorizedContextObject(ASSOC_TYPE_SUBMISSION);
+		$context = $request->getContext();
+
+		// Verify file is a DOCX file
+		$mimeType = $submissionFile->getData('mimetype');
+		if ($mimeType !== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+			return new JSONMessage(false, __('plugins.generic.xmlEditor.conversion.error'));
+		}
+
+		try {
+			// Get file path
+			import('lib.pkp.classes.file.PrivateFileManager');
+			$fileManager = new PrivateFileManager();
+			$filePath = $fileManager->getBasePath() . '/' . $submissionFile->getData('path');
+
+			// Convert DOCX to JATS using docxToJats
+			$docxArchive = new DOCXArchive($filePath);
+			$jatsDocument = new Document($docxArchive);
+			$jatsXML = $jatsDocument->saveXML();
+
+			// Save converted XML to temporary file
+			$tmpfname = tempnam(sys_get_temp_dir(), 'xmleditor');
+			file_put_contents($tmpfname, $jatsXML);
+
+			// Create new XML submission file
+			$submissionDir = Services::get('submissionFile')->getSubmissionDir($context->getData('id'), $submissionId);
+			$newFileId = Services::get('file')->add(
+				$tmpfname,
+				$submissionDir . DIRECTORY_SEPARATOR . uniqid() . '.xml'
+			);
+
+			// Create new file name (replace .docx with .xml)
+			$newName = [];
+			foreach ($submissionFile->getData('name') as $localeKey => $name) {
+				$newName[$localeKey] = pathinfo($name, PATHINFO_FILENAME) . '.xml';
+			}
+
+			// Create new submission file object
+			$submissionFileDao = DAORegistry::getDAO('SubmissionFileDAO');
+			$newSubmissionFile = $submissionFileDao->newDataObject();
+			$newSubmissionFile->setAllData([
+				'fileId' => $newFileId,
+				'assocType' => $submissionFile->getData('assocType'),
+				'assocId' => $submissionFile->getData('assocId'),
+				'fileStage' => $submissionFile->getData('fileStage'),
+				'mimetype' => 'application/xml',
+				'locale' => $submissionFile->getData('locale'),
+				'genreId' => $submissionFile->getData('genreId'),
+				'name' => $newName,
+				'submissionId' => $submissionId,
+			]);
+
+			$newSubmissionFile = Services::get('submissionFile')->add($newSubmissionFile, $request);
+			unlink($tmpfname);
+
+			// Extract and attach images from DOCX
+			$mediaData = $docxArchive->getMediaFilesContent();
+			if (!empty($mediaData)) {
+				foreach ($mediaData as $originalName => $singleData) {
+					$this->_attachImageFile($request, $submission, $submissionFileDao, $newSubmissionFile, $fileManager, $originalName, $singleData);
+				}
+			}
+
+			return new JSONMessage(true, [
+				'submissionId' => $submissionId,
+				'fileId' => $newSubmissionFile->getData('fileId'),
+				'fileStage' => $newSubmissionFile->getData('fileStage'),
+			]);
+
+		} catch (Exception $e) {
+			error_log('XML Editor conversion error: ' . $e->getMessage());
+			return new JSONMessage(false, __('plugins.generic.xmlEditor.conversion.error'));
+		}
+	}
+
+	/**
+	 * Attach image file extracted from DOCX as dependent file
+	 * @param $request PKPRequest
+	 * @param $submission Submission
+	 * @param $submissionFileDao SubmissionFileDAO
+	 * @param $newSubmissionFile SubmissionFile
+	 * @param $fileManager PrivateFileManager
+	 * @param $originalName string
+	 * @param $singleData string
+	 */
+	private function _attachImageFile($request, $submission, $submissionFileDao, $newSubmissionFile, $fileManager, $originalName, $singleData) {
+		$tmpfnameSuppl = tempnam(sys_get_temp_dir(), 'xmleditor');
+		file_put_contents($tmpfnameSuppl, $singleData);
+		$mimeType = mime_content_type($tmpfnameSuppl);
+
+		// Determine genre for image files
+		$genreDao = DAORegistry::getDAO('GenreDAO');
+		$genres = $genreDao->getByDependenceAndContextId(true, $request->getContext()->getId());
+		$supplGenreId = null;
+		while ($genre = $genres->next()) {
+			if (($mimeType == "image/png" || $mimeType == "image/jpeg") && $genre->getKey() == "IMAGE") {
+				$supplGenreId = $genre->getId();
+				break;
+			}
+		}
+
+		if (!$supplGenreId) {
+			unlink($tmpfnameSuppl);
+			return;
+		}
+
+		$submissionDir = Services::get('submissionFile')->getSubmissionDir($submission->getData('contextId'), $submission->getId());
+		$newFileId = Services::get('file')->add(
+			$tmpfnameSuppl,
+			$submissionDir . '/' . uniqid() . '.' . $fileManager->parseFileExtension($originalName)
+		);
+
+		// Create dependent file
+		$newSupplementaryFile = $submissionFileDao->newDataObject();
+		$newSupplementaryFile->setAllData([
+			'fileId' => $newFileId,
+			'assocId' => $newSubmissionFile->getId(),
+			'assocType' => ASSOC_TYPE_SUBMISSION_FILE,
+			'fileStage' => SUBMISSION_FILE_DEPENDENT,
+			'submissionId' => $submission->getId(),
+			'genreId' => $supplGenreId,
+			'name' => array_fill_keys(array_keys($newSubmissionFile->getData('name')), basename($originalName))
+		]);
+
+		Services::get('submissionFile')->add($newSupplementaryFile, $request);
+		unlink($tmpfnameSuppl);
 	}
 }

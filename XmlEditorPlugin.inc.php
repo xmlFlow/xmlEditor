@@ -90,6 +90,7 @@ class XmlEditorPlugin extends GenericPlugin {
 			case 'xmlEditor/editor':
 			case 'xmlEditor/json':
 			case 'xmlEditor/media':
+			case 'xmlEditor/convertWordToXml':
 				define('HANDLER_CLASS', 'XmlEditorHandler');
 				define('XMLEDITOR_PLUGIN_NAME', $this->getName());
 				$args[2] = $this->getPluginPath() . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . 'XmlEditorHandler.inc.php';
@@ -140,6 +141,12 @@ class XmlEditorPlugin extends GenericPlugin {
 					import('lib.pkp.classes.linkAction.request.OpenWindowAction');
 					$this->_editWithXmlEditorAction($row, $dispatcher, $request, $submissionFile, $stageId);
 				}
+
+				// Add conversion action for DOCX files
+				if ($fileExtension == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+					import('lib.pkp.classes.linkAction.request.PostAndRedirectAction');
+					$this->_convertWordToXmlAction($row, $dispatcher, $request, $submissionFile, $stageId);
+				}
 			}
 		}
 	}
@@ -165,6 +172,35 @@ class XmlEditorPlugin extends GenericPlugin {
 				)
 			),
 			__('plugins.generic.xmlEditor.links.editWithXmlEditor'),
+			null
+		));
+	}
+
+	/**
+	 * Adds convert Word to XML action to files grid
+	 * @param $row SubmissionFilesGridRow
+	 * @param Dispatcher $dispatcher
+	 * @param PKPRequest $request
+	 * @param $submissionFile SubmissionFile
+	 * @param int $stageId
+	 */
+	private function _convertWordToXmlAction($row, Dispatcher $dispatcher, PKPRequest $request, $submissionFile, int $stageId): void {
+		$submissionId = $submissionFile->getData('submissionId');
+
+		$conversionUrl = $dispatcher->url($request, ROUTE_PAGE, null, 'xmlEditor', 'convertWordToXml', null,
+			array(
+				'submissionId' => $submissionId,
+				'submissionFileId' => $submissionFile->getData('id'),
+				'stageId' => $stageId
+			)
+		);
+
+		$redirectUrl = $dispatcher->url($request, ROUTE_PAGE, null, 'workflow', 'access', $submissionId);
+
+		$row->addAction(new LinkAction(
+			'xmleditor_convert',
+			new PostAndRedirectAction($conversionUrl, $redirectUrl),
+			__('plugins.generic.xmlEditor.links.convertWordToXml'),
 			null
 		));
 	}
