@@ -1,0 +1,9 @@
+# Rewrite rules for Next.js static assets
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /ojs-3_3/plugins/generic/xmlEditor/
+
+    # Rewrite /_next/* to the plugin's editor/_next/*
+    RewriteCond %{REQUEST_URI} ^/_next/
+    RewriteRule ^(.*)$ /ojs-3_3/plugins/generic/xmlEditor/editor/$1 [L,QSA]
+</IfModule>

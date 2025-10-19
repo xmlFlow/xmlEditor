@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML" article-type="research-article" dtd-version="1.3" xml:lang="en">
+  <front>
+  <journal-meta>
+    <journal-title-group>
+      <journal-title>Journal of Scientific Research</journal-title>
+      <abbrev-journal-title>J Sci Res</abbrev-journal-title>
+    </journal-title-group>
+    <issn pub-type="ppub">1234-5678</issn>
+    <publisher>
+      <publisher-name>Academic Publishing House</publisher-name>
+      <publisher-loc>New York, NY, USA</publisher-loc>
+    </publisher>
+  </journal-meta>
+  <article-meta>
+    <article-id pub-id-type="doi">10.1234/jsr.2024.001</article-id>
+    <article-id pub-id-type="publisher-id">JSR-2024-001</article-id>
+    <title-group>
+      <article-title>Advanced CRISPR-Cas9 Gene Editing Techniques for Therapeutic Applications: A Comprehensive Analysis of Current Methods and Future Directions</article-title>
+      <subtitle>Exploring Novel Approaches in Precision Medicine</subtitle>
+    </title-group>
+    <contrib-group>
+      <contrib contrib-type="author" corresp="yes">
+        <name>
+          <surname>Smith</surname>
+          <given-names>John Michael</given-names>
+          <prefix>Dr.</prefix>
+          <suffix>Jr.</suffix>
+        </name>
+        <email>john.smith@university.edu</email>
+        <contrib-id contrib-id-type="orcid">0000-0002-1825-0097</contrib-id>
+        <xref ref-type="aff" rid="aff1"/>
+        <xref ref-type="aff" rid="aff2"/>
+      </contrib>
+      <contrib contrib-type="author">
+        <name>
+          <surname>Johnson</surname>
+          <given-names>Emily Rose</given-names>
+        </name>
+        <contrib-id contrib-id-type="orcid">0000-0003-1234-5678</contrib-id>
+        <xref ref-type="aff" rid="aff1"/>
+      </contrib>
+      <contrib contrib-type="author">
+        <name>
+          <surname>Williams</surname>
+          <given-names>Robert</given-names>
+        </name>
+        <xref ref-type="aff" rid="aff3"/>
+        <xref ref-type="aff" rid="aff4"/>
+      </contrib>
+      <contrib contrib-type="author">
+        <name>
+          <surname>Williams</surname>
+          <given-names>Robert</given-names>
+        </name>
+        <xref ref-type="aff" rid="aff3"/>
+      </contrib>
+      <contrib contrib-type="author">
+        <name>
+          <surname>Davis</surname>
+          <given-names>Sarah</given-names>
+        </name>
+        <xref ref-type="aff" rid="aff4"/>
+      </contrib>
+    </contrib-group>
+    <aff id="aff1">
+      <institution-wrap>
+        <institution>Department of Molecular Biology</institution>
+      </institution-wrap>
+    </aff>
+    <aff id="aff1-alt">
+      <institution-wrap>
+        <institution>Departamento de Biología Molecular</institution>
+      </institution-wrap>
+    </aff>
+    <aff id="aff2">
+      <institution-wrap>
+        <institution>Institute for Gene Therapy</institution>
+      </institution-wrap>
+    </aff>
+    <aff id="aff3">
+      <institution-wrap>
+        <institution>University of Cambridge</institution>
+      </institution-wrap>
+    </aff>
+    <aff id="aff4">
+      <institution-wrap>
+        <institution>Max Planck Institute</institution>
+      </institution-wrap>
+    </aff>
+    <pub-date pub-type="epub">
+      <day>15</day>
+      <month>03</month>
+      <year>2024</year>
+    </pub-date>
+    <volume>25</volume>
+    <issue>4</issue>
+    <fpage>123</fpage>
+    <lpage>145</lpage>
+    <history>
+      <date date-type="received">
+        <day>15</day>
+        <month>1</month>
+        <year>2024</year>
+      </date>
+      <date date-type="accepted">
+        <day>1</day>
+        <month>3</month>
+        <year>2024</year>
+      </date>
+    </history>
+    <permissions>
+      <copyright-statement>© 2024 The Authors</copyright-statement>
+      <copyright-year>2024</copyright-year>
+      <copyright-holder>The Authors</copyright-holder>
+      <license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+        <license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+      </license>
+    </permissions>
+    <abstract>
+      <p>
+        Executive Summary
+        CRISPR-Cas9 technology represents a revolutionary advancement in gene editing with unprecedented therapeutic potential.
+      </p>
+    </abstract>
+    <kwd-group>
+      <kwd>CRISPR-Cas9</kwd>
+      <kwd>gene editing</kwd>
+      <kwd>therapeutics</kwd>
+      <kwd>precision medicine</kwd>
+      <kwd>genome engineering</kwd>
+      <kwd>CRISPR-Cas Systems</kwd>
+      <kwd>Gene Editing</kwd>
+      <kwd>Genetic Therapy</kwd>
+      <kwd>Precision Medicine</kwd>
+    </kwd-group>
+    <funding-group>
+      <funding-statement>This work was supported by grants from the National Institutes of Health (NIH-R01-GM123456) and the National Science Foundation (NSF-2024-567890).</funding-statement>
+    </funding-group>
+  </article-meta>
+</front>
+  <body>
+    <sec id="sec1"><title>Introduction</title><p>The development of CRISPR-Cas9 technology has revolutionized the field of genetic engineering, providing researchers with an unprecedented ability to make precise modifications to DNA sequences <sup><xref ref-type="bibr" rid="ref1">[1]</xref></sup>. This technology, originally discovered as part of the bacterial adaptive immune system, has been adapted for use in a wide range of organisms and applications <sup><xref ref-type="bibr" rid="ref2,ref3">[2,3]</xref></sup>.</p><p>The potential therapeutic applications of CRISPR are vast and include: Treatment of inherited genetic disorders Cancer immunotherapy Infectious disease treatment Tissue engineering and regenerative medicine</p><p>Recent studies have demonstrated the clinical potential of CRISPR technology in treating conditions such as sickle cell disease <sup><xref ref-type="bibr" rid="ref4">[4]</xref></sup> and beta-thalassemia <sup><xref ref-type="bibr" rid="ref5">[</xref></sup>[Formula]<sup><xref ref-type="bibr" rid="ref5">5]</xref></sup>. However, several challenges remain before widespread clinical implementation can be achieved.</p></sec><sec id="sec2"><title>Current Challenges in CRISPR Technology</title><p>Despite its promise, CRISPR-Cas9 technology faces several significant challenges that must be addressed before it can be safely and effectively implemented in clinical settings.</p></sec><sec id="sec3"><title>Off-target Effects</title><p>One of the primary concerns with CRISPR technology is the potential for off-target effects, where the system makes unintended cuts in the genome. Studies have shown that even small amounts of off-target activity can have significant biological consequences <sup><xref ref-type="bibr" rid="ref6">[6]</xref></sup>.</p></sec><sec id="sec4"><title>Delivery Methods</title><p>Efficient delivery of CRISPR components to target cells remains a significant challenge. Current methods include: Viral vectors (adeno-associated virus, lentivirus) Lipid nanoparticles Direct injection Electroporation</p></sec><sec id="sec5"><title>Materials and Methods</title></sec><sec id="sec6"><title>Cell Culture and Maintenance</title><p>Human embryonic kidney 293T cells (HEK293T) were cultured in Dulbecco's Modified Eagle Medium (DMEM) supplemented with 10% fetal bovine serum and 1% penicillin-streptomycin. Cells were maintained at 37°C in a humidified atmosphere containing 5% CO2.</p><p>Cell viability was assessed using the MTT assay as previously described <sup><xref ref-type="bibr" rid="ref7">[7]</xref></sup>. Briefly, cells were seeded at a density of 1 × 104 cells per well in 96-well plates and allowed to adhere overnight.</p></sec><sec id="sec7"><title>CRISPR-Cas9 System Design</title><p>Guide RNAs were designed using the online tool CHOPCHOP (https://chopchop.cbu.uib.no/) targeting the BRCA1 gene. The target sequence was: 5'-GAAGTTGACTCGTACCTGAA-3' (PAM: CGG).</p><fig id="fig-sec7">
+      <graphic xlink:href="http://localhost:3000/editor/figure1.tif" alt-text="
+            CRISPR-Cas9 targeting strategy
+            A) Schematic representation of the CRISPR-Cas9 system targeting the BRCA1 gene. B) DNA sequence showing the guide RNA binding site and PAM sequence. C) Expected cleavage site indicated by the arrow.
+          " />
+      <caption>
+        <title>Figure 7</title>
+        <p>
+            CRISPR-Cas9 targeting strategy
+            A) Schematic representation of the CRISPR-Cas9 system targeting the BRCA1 gene. B) DNA sequence showing the guide RNA binding site and PAM sequence. C) Expected cleavage site indicated by the arrow.
+          </p>
+      </caption>
+    </fig><p>Figure 1</p><p> CRISPR-Cas9 targeting strategy A) Schematic representation of the CRISPR-Cas9 system targeting the BRCA1 gene. B) DNA sequence showing the guide RNA binding site and PAM sequence. C) Expected cleavage site indicated by the arrow.</p><p>The efficiency of our targeting approach is shown in Figure 1 and detailed in Table 1.</p></sec><sec id="sec8"><title>Statistical Analysis</title><p>All experiments were performed in triplicate unless otherwise noted. Data are presented as mean ± standard error of the mean (SEM). Statistical significance was determined using Student's t-test or one-way ANOVA followed by Tukey's post-hoc test, as appropriate. A p-value <0.05 was considered statistically significant. The confidence interval was calculated as x¯±1.96σn for a 95% confidence level.</p><p>The relationship between guide RNA concentration and editing efficiency can be described by the equation:</p><p>E = E max × C C + K d (1)</p><p>where E is the editing efficiency, Emax is the maximum editing efficiency, C is the guide RNA concentration, and Kd is the dissociation constant.</p><p>The rate of target binding can be expressed using the Michaelis-Menten equation:</p><p>v = V max ⁢ [ S ] K m + [ S ] (2)</p><p>The probability of successful editing across n independent trials follows a binomial distribution, with the expected number of successful edits given by:</p><p>P ( X = k ) = ( n k ) p k ( 1 − p ) n − k (3)</p></sec><sec id="sec9"><title>Results</title></sec><sec id="sec10"><title>Optimization of Guide RNA Design</title><p>We systematically evaluated different guide RNA designs to optimize CRISPR-Cas9 editing efficiency. As shown in Table 1, guide RNAs with GC content between 40-60% demonstrated the highest editing efficiency.</p><p>Table 1</p><p> Comparison of guide RNA designs and their editing efficiencies Data represent mean ± SEM from three independent experiments. Statistical significance was determined using one-way ANOVA.</p><table-wrap id="table-sec10">
+      <table frame="hsides" rules="groups">
+        <thead><tr><th>Guide RNA ID</th><th>Target Sequence (5' to 3')</th><th>GC Content (%)</th><th>Editing Efficiency (%)</th><th>Off-target Score</th><th>P-value</th></tr></thead><tbody><tr><td>gRNA-1</td><td>GAAGTTGACTCGTACCTGAA</td><td>45</td><td>89.2 ± 2.1</td><td>0.8</td><td>< 0.001</td></tr><tr><td>gRNA-2</td><td>CGATCGATCGATCGATCGAT</td><td>60</td><td>92.5 ± 1.8</td><td>0.6</td><td>< 0.001</td></tr><tr><td>gRNA-3</td><td>AAAAAAAAAAAAAAAAAAAT</td><td>5</td><td>23.1 ± 4.2</td><td>2.1</td><td>0.012</td></tr><tr><td>gRNA-4</td><td>GCGCGCGCGCGCGCGCGCGC</td><td>100</td><td>34.7 ± 3.9</td><td>1.9</td><td>0.008</td></tr></tbody></table></table-wrap><p>The most effective guide RNA (gRNA-2) achieved 92.5% editing efficiency with minimal off-target effects, representing a significant improvement over previously reported methods.</p></sec><sec id="sec11"><title>Enhanced Delivery System Performance</title><p>Our novel lipid nanoparticle formulation demonstrated superior cellular uptake compared to standard delivery methods. The time-course analysis revealed peak editing activity at 48 hours post-transfection (Figure 2).</p><fig id="fig-sec11">
+      <graphic xlink:href="http://localhost:3000/editor/figure2.tif" alt-text="
+            Time-course analysis of CRISPR editing efficiency
+            A) Editing efficiency over time using different delivery methods. B) Cell viability assessment at corresponding time points. C) Representative gel electrophoresis showing PCR products from edited cells. Error bars represent SEM (n=3). **P < 0.01, ***P < 0.001.
+          " />
+      <caption>
+        <title>Figure 11</title>
+        <p>
+            Time-course analysis of CRISPR editing efficiency
+            A) Editing efficiency over time using different delivery methods. B) Cell viability assessment at corresponding time points. C) Representative gel electrophoresis showing PCR products from edited cells. Error bars represent SEM (n=3). **P < 0.01, ***P < 0.001.
+          </p>
+      </caption>
+    </fig><p>Figure 2</p><p> Time-course analysis of CRISPR editing efficiency A) Editing efficiency over time using different delivery methods. B) Cell viability assessment at corresponding time points. C) Representative gel electrophoresis showing PCR products from edited cells. Error bars represent SEM (n=3). **P < 0.01, ***P < 0.001.</p><p>When optimizing CRISPR delivery systems, several factors must be considered:</p><p>Particle size and surface charge</p><p>Targeting ligand selection</p><p>Release kinetics of CRISPR components</p><p>Biocompatibility and immunogenicity</p></sec><sec id="sec12"><title>Functional Validation Studies</title><p>To validate the functional consequences of our CRISPR edits, we performed comprehensive downstream analyses including:</p><p>Western blot analysis of target protein expression</p><p>Quantitative RT-PCR for mRNA levels</p><p>Flow cytometry for cellular phenotype changes</p><p>Functional assays specific to the target pathway</p><p>The results confirmed successful knockdown of the target gene with corresponding phenotypic changes in cellular behavior.</p><p>For any given target sequence, the optimal guide RNA can be predicted using the formula derived from our experimental data, taking into account GC content, secondary structure predictions, and off-target potential.</p><p>The cumulative effect of multiple guide RNAs can be modeled as a summation:</p><p>E total = ∑ i = 1 n w i ⁢ E i (4)</p><p>where wi represents the weighting factor for each guide RNA and Ei is the individual editing efficiency.</p><p>The temporal dynamics of editing can be described by integrating the editing rate over time:</p><p>E ( t ) = ∫ 0 t r ( τ ) ⁢ e − λ ⁢ τ d τ (5)</p><p>The standard deviation of editing efficiency across multiple cell lines can be calculated as:</p><p>σ = 1 N − 1 ∑ i = 1 N ( x i − x ¯ ) 2 (6)</p></sec><sec id="sec13"><title>Discussion</title><p>Our study demonstrates significant improvements in CRISPR-Cas9 editing efficiency through optimized guide RNA design and enhanced delivery systems. These findings have important implications for the clinical translation of CRISPR technology.</p></sec><sec id="sec14"><title>Comparison with Previous Studies</title><p>Previous studies have reported editing efficiencies ranging from 30-70% using conventional methods <sup><xref ref-type="bibr" rid="ref8,ref9">[8,9]</xref></sup>. Our approach achieved consistently higher efficiency (>90%) while maintaining low off-target activity, representing a substantial advancement in the field.</p><p>The relationship between multiple experimental variables can be expressed using matrix notation:</p><p>[ E 1 E 2 E 3 ] = [ a 11 a 12 a 13 a 21 a 22 a 23 a 31 a 32 a 33 ] [ C 1 C 2 C 3 ] (7)</p><p>where Ei represents the editing efficiency for cell line i, Cj represents the concentration of component j, and aij are the coefficient matrix elements.</p><p>The improved performance can be attributed to several key innovations: Enhanced Guide RNA Design Our computational algorithm considers multiple factors including thermodynamic stability and chromatin accessibility Optimized Delivery Vehicles Novel lipid nanoparticle formulations with improved cellular uptake and reduced toxicity Temporal Control Controlled release mechanisms that optimize the timing of CRISPR component delivery</p></sec><sec id="sec15"><title>Clinical Implications</title><p>The high efficiency and specificity demonstrated in our study suggest that this improved CRISPR system could be suitable for clinical applications. However, several considerations remain:</p><p>Safety Profile: Long-term studies are needed to assess potential adverse effects</p><p>Regulatory Approval: Comprehensive preclinical testing will be required</p><p>Manufacturing Scale: Production methods must be scalable for clinical use</p><p>Cost Considerations: Economic feasibility for widespread implementation</p><p>As noted by Zhang et al. (2023) "The translation of CRISPR technology from bench to bedside requires not only technical optimization but also careful consideration of ethical, regulatory, and social implications."</p></sec><sec id="sec16"><title>Limitations and Future Directions</title><p>While our results are promising, several limitations should be acknowledged. First, our studies were conducted primarily in cell culture systems, and in vivo validation is necessary. Second, the long-term stability of edited cells requires further investigation.</p><p>The optimization of guide RNA concentration follows a quadratic relationship that can be solved using:</p><p>C = − b ± b 2 − 4 a c 2 a (8)</p><p>The editing efficiency as a function of time can be modeled using a piecewise function:</p><p>f ( t ) = { 0 , t < 0 E max ( 1 − e − k t ) , 0 ≤ t ≤ 48 E max e − λ ( t − 48 ) , t > 48 (9)</p><p>where t is time in hours, k is the growth rate constant, and λ is the decay rate constant.</p><p>Future research directions include: Development of tissue-specific delivery methods Integration with other gene editing technologies (base editing, prime editing) Application to additional therapeutic targets Investigation of immune responses to CRISPR components</p><p>Additional experimental protocols, extended data figures, and statistical analyses are provided in the supplementary material.</p></sec><sec id="sec17"><title>Conclusions</title><p>In conclusion, we have developed an improved CRISPR-Cas9 system that demonstrates significantly enhanced editing efficiency and reduced off-target effects. The key innovations include:</p><p>Computational optimization of guide RNA design parameters</p><p>Novel lipid nanoparticle delivery system with enhanced cellular uptake</p><p>Systematic evaluation of editing kinetics and optimal timing</p><p>Comprehensive safety and specificity assessments</p><p>These advances represent a significant step toward the clinical implementation of CRISPR technology for treating genetic diseases. However, continued research and development are necessary to address remaining challenges and ensure the safe and effective translation of this technology to clinical practice.</p><p>The implications of this work extend beyond immediate therapeutic applications, potentially enabling new approaches to: Personalized medicine based on individual genetic profiles Treatment of previously intractable genetic disorders Development of cellular models for drug discovery Enhancement of agricultural and biotechnology applications</p></sec>
+  </body>
+  <back>
+    <fn-group><fn id="fn1"><p>These authors contributed equally to this work.</p></fn><fn id="fn2"><p>Author contributions: J.M.S. conceived and designed the experiments; E.R.J. performed the experiments; J.M.S. and E.R.J. analyzed the data; J.M.S. wrote the paper.</p></fn><fn id="fn3"><p>The authors declare no competing financial interests.</p></fn><fn id="fn4"><p>Present address: Department of Genetics, University of California, San Francisco, CA, USA</p></fn><fn id="table-fn1"><p>Off-target scores calculated using GUIDE-seq analysis</p></fn><fn id="table-fn2"><p>P-values compared to negative control</p></fn><fn id="table2-fn1"><p>LNP = Lipid Nanoparticle; AAV = Adeno-Associated Virus</p></fn><fn id="table2-fn2"><p>Data represent mean ± SEM from at least three independent experiments</p></fn><fn id="table2-fn3"><p>Statistical significance determined by one-way ANOVA with Tukey's post-hoc test</p></fn></fn-group>
+    <ref-list><title>References</title><ref id="ref1">
+            <element-citation publication-type="journal">
+              <person-group person-group-type="author"><name>
+              <surname>Jinek</surname>
+              <given-names>M</given-names>
+            </name><name>
+              <surname>Chylinski</surname>
+              <given-names>K</given-names>
+            </name><name>
+              <surname>Fonfara</surname>
+              <given-names>I</given-names>
+            </name><name>
+              <surname>Hauer</surname>
+              <given-names>M</given-names>
+            </name><name>
+              <surname>Doudna</surname>
+              <given-names>JA</given-names>
+            </name><name>
+              <surname>Charpentier</surname>
+              <given-names>E</given-names>
+            </name></person-group>
+              <article-title>A programmable dual-RNA-guided DNA endonuclease in adaptive bacterial immunity</article-title>
+              <source>Science</source>
+              <year>2012</year>
+              <volume>337</volume>
+              <issue>6096</issue>
+              <fpage>816</fpage>
+              <lpage>821</lpage>
+            </element-citation>
+          </ref><ref id="ref2">
+            <element-citation publication-type="journal">
+              <person-group person-group-type="author"><name>
+              <surname>Cong</surname>
+              <given-names>L</given-names>
+            </name><name>
+              <surname>Ran</surname>
+              <given-names>FA</given-names>
+            </name><name>
+              <surname>Cox</surname>
+              <given-names>D</given-names>
+            </name></person-group>
+              <article-title>Multiplex genome engineering using CRISPR/Cas systems</article-title>
+              <source>Science</source>
+              <year>2013</year>
+              <volume>339</volume>
+              <issue>6121</issue>
+              <fpage>819</fpage>
+              <lpage>823</lpage>
+            </element-citation>
+          </ref><ref id="ref3">
+            <element-citation publication-type="journal">
+              <person-group person-group-type="author"><name>
+              <surname>Mali</surname>
+              <given-names>P</given-names>
+            </name><name>
+              <surname>Yang</surname>
+              <given-names>L</given-names>
+            </name><name>
+              <surname>Esvelt</surname>
+              <given-names>KM</given-names>
+            </name></person-group>
+              <article-title>RNA-guided human genome engineering via Cas9</article-title>
+              <source>Science</source>
+              <year>2013</year>
+              <volume>339</volume>
+              <issue>6121</issue>
+              <fpage>823</fpage>
+              <lpage>826</lpage>
+            </element-citation>
+          </ref><ref id="ref4">
+            <element-citation publication-type="journal">
+              <person-group person-group-type="author"><name>
+              <surname>Frangoul</surname>
+              <given-names>H</given-names>
+            </name><name>
+              <surname>Altshuler</surname>
+              <given-names>D</given-names>
+            </name><name>
+              <surname>Cappellini</surname>
+              <given-names>MD</given-names>
+            </name></person-group>
+              <article-title>Exagamglogene autotemcel for sickle cell disease</article-title>
+              <source>N Engl J Med</source>
+              <year>2021</year>
+              <volume>384</volume>
+              <issue>3</issue>
+              <fpage>252</fpage>
+              <lpage>260</lpage>
+            </element-citation>
+          </ref><ref id="ref5">
+            <element-citation publication-type="journal">
+              <person-group person-group-type="author"><name>
+              <surname>Thompson</surname>
+              <given-names>AA</given-names>
+            </name><name>
+              <surname>Walters</surname>
+              <given-names>MC</given-names>
+            </name><name>
+              <surname>Kwiatkowski</surname>
+              <given-names>J</given-names>
+            </name></person-group>
+              <article-title>Gene therapy in patients with transfusion-dependent β-thalassemia</article-title>
+              <source>N Engl J Med</source>
+              <year>2018</year>
+              <volume>378</volume>
+              <issue>16</issue>
+              <fpage>1479</fpage>
+              <lpage>1493</lpage>
+            </element-citation>
+          </ref><ref id="ref6">
+            <element-citation publication-type="journal">
+              <person-group person-group-type="author"><name>
+              <surname>Kosicki</surname>
+              <given-names>M</given-names>
+            </name><name>
+              <surname>Tomberg</surname>
+              <given-names>K</given-names>
+            </name><name>
+              <surname>Bradley</surname>
+              <given-names>A</given-names>
+            </name></person-group>
+              <article-title>Repair of double-strand breaks induced by CRISPR-Cas9 leads to large deletions and complex rearrangements</article-title>
+              <source>Nat Biotechnol</source>
+              <year>2018</year>
+              <volume>36</volume>
+              <issue>8</issue>
+              <fpage>765</fpage>
+              <lpage>771</lpage>
+            </element-citation>
+          </ref><ref id="ref7">
+            <element-citation publication-type="book">
+              <person-group person-group-type="author"><name>
+              <surname>Mosmann</surname>
+              <given-names>T</given-names>
+            </name></person-group>
+              <article-title></article-title>
+              <source>Immunological Methods</source>
+              <year>1983</year>
+              <volume></volume>
+              <issue></issue>
+              <fpage>55</fpage>
+              <lpage>63</lpage>
+            </element-citation>
+          </ref><ref id="ref8">
+            <element-citation publication-type="conf-proc">
+              <person-group person-group-type="author"><name>
+              <surname>Chen</surname>
+              <given-names>X</given-names>
+            </name><name>
+              <surname>Liu</surname>
+              <given-names>Y</given-names>
+            </name></person-group>
+              <article-title>Optimization strategies for CRISPR delivery systems</article-title>
+              <source></source>
+              <year>2023</year>
+              <volume></volume>
+              <issue></issue>
+              <fpage>45</fpage>
+              <lpage>52</lpage>
+            </element-citation>
+          </ref><ref id="ref9">
+            <element-citation publication-type="webpage">
+              <person-group person-group-type="author"><name>
+              <surname>Rodriguez</surname>
+              <given-names>A</given-names>
+            </name></person-group>
+              <article-title>CRISPR efficiency metrics and benchmarks</article-title>
+              <source>CRISPR Database</source>
+              <year>2023</year>
+              <volume></volume>
+              <issue></issue>
+              <fpage></fpage>
+              <lpage></lpage>
+            </element-citation>
+          </ref><ref id="ref10">
+            <element-citation publication-type="thesis">
+              <person-group person-group-type="author"><name>
+              <surname>Zhang</surname>
+              <given-names>L</given-names>
+            </name></person-group>
+              <article-title>Ethical considerations in clinical CRISPR applications</article-title>
+              <source></source>
+              <year>2023</year>
+              <volume></volume>
+              <issue></issue>
+              <fpage></fpage>
+              <lpage></lpage>
+            </element-citation>
+          </ref><ref id="ref11">
+            <mixed-citation publication-type="journal">
+          
+            Anderson
+            KP
+          ,
+          
+            Fox
+            MC
+          .
+          CRISPR applications in agriculture: current status and future prospects.
+          Plant Biotechnol J
+          2024;
+          22(3):156-168.
+          doi: 10.1111/pbi.14025
+        </mixed-citation>
+          </ref></ref-list>
+  </back>
+</article>

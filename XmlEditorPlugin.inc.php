@@ -16,8 +16,12 @@
 
 import('lib.pkp.classes.plugins.GenericPlugin');
 
-define('DAR_MANIFEST_FILE', 'manifest.xml');
-define('DAR_MANUSCRIPT_FILE', 'manuscript.xml');
+if (!defined('DAR_MANIFEST_FILE')) {
+	define('DAR_MANIFEST_FILE', 'manifest.xml');
+}
+if (!defined('DAR_MANUSCRIPT_FILE')) {
+	define('DAR_MANUSCRIPT_FILE', 'manuscript.xml');
+}
 
 /**
  * Class XmlEditorPlugin

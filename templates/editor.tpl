@@ -5,24 +5,31 @@
  * Copyright (c) 2003-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
- * XML Editor page
+ * XML Editor page - Next.js App
  *}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="jobId" content="{$documentUrl|escape}">
 		<title>{$title|escape}</title>
-
-		{* Editor dependencies - can be customized to use different XML editors *}
-		<link href="{$pluginUrl|escape}/editor.css" rel="stylesheet" type="text/css"/>
-
-		{* JavaScript for editor functionality *}
-		<script type="text/javascript" src="{$pluginUrl|escape}/editor.js"></script>
+		<style>
+			body, html {
+				margin: 0;
+				padding: 0;
+				height: 100%;
+				overflow: hidden;
+			}
+			iframe {
+				width: 100%;
+				height: 100vh;
+				border: none;
+				display: block;
+			}
+		</style>
 	</head>
 	<body>
-		<div id="xml-editor-container">
-			{* Editor will be loaded here via JavaScript *}
-		</div>
+		<iframe src="{$pluginUrl|escape}/editor/editor/"></iframe>
 	</body>
 </html>
