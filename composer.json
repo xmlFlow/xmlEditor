@@ -1,0 +1,17 @@
+{
+    "name": "withanage/xml-editor",
+    "autoload": {
+        "psr-4": {
+            "Withanage\\XmlEditor\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "withanage",
+            "email": "dulip.withanage@gmail.com"
+        }
+    ],
+    "require": {
+        "naneau/php-obfuscator": "^0.0.5"
+    }
+}
