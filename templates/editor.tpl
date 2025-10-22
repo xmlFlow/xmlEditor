@@ -30,6 +30,6 @@
 		</style>
 	</head>
 	<body>
-		<iframe src="{$pluginUrl|escape}/editor/editor/"></iframe>
+		<iframe src="{$pluginUrl|escape}/editor/editor/?submissionId={$submissionId|escape}&submissionFileId={$submissionFileId|escape}&stageId={$stageId|escape}"></iframe>
 	</body>
 </html>

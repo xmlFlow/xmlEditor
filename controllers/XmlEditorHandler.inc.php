@@ -107,7 +107,10 @@ class XmlEditorHandler extends Handler {
 			'documentUrl' => $documentUrl,
 			'editorUrl' => $this->_plugin->getEditorUrl($request),
 			'pluginUrl' => $this->_plugin->getPluginUrl($request),
-			'title' => $title
+			'title' => $title,
+			'submissionId' => $submissionId,
+			'submissionFileId' => $submissionFileId,
+			'stageId' => $stageId
 		));
 
 		return $templateMgr->fetch($editorTemplateFile);
