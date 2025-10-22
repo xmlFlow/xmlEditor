@@ -95,6 +95,7 @@ class XmlEditorPlugin extends GenericPlugin {
 			case 'xmlEditor/json':
 			case 'xmlEditor/media':
 			case 'xmlEditor/convertWordToXml':
+			case 'xmlEditor/convertJatsToJats':
 				define('HANDLER_CLASS', 'XmlEditorHandler');
 				define('XMLEDITOR_PLUGIN_NAME', $this->getName());
 				$args[2] = $this->getPluginPath() . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . 'XmlEditorHandler.inc.php';
@@ -144,6 +145,10 @@ class XmlEditorPlugin extends GenericPlugin {
 				if (strtolower($fileExtension) == 'text/xml') {
 					import('lib.pkp.classes.linkAction.request.OpenWindowAction');
 					$this->_editWithXmlEditorAction($row, $dispatcher, $request, $submissionFile, $stageId);
+
+					// Add JATS conversion action for XML files
+					import('lib.pkp.classes.linkAction.request.PostAndRedirectAction');
+					$this->_convertJatsToJatsAction($row, $dispatcher, $request, $submissionFile, $stageId);
 				}
 
 				// Add conversion action for DOCX files
@@ -207,5 +212,85 @@ class XmlEditorPlugin extends GenericPlugin {
 			__('plugins.generic.xmlEditor.links.convertWordToXml'),
 			null
 		));
+	}
+
+	/**
+	 * Adds convert JATS to JATS action to XML files grid
+	 * @param $row SubmissionFilesGridRow
+	 * @param Dispatcher $dispatcher
+	 * @param PKPRequest $request
+	 * @param $submissionFile SubmissionFile
+	 * @param int $stageId
+	 */
+	private function _convertJatsToJatsAction($row, Dispatcher $dispatcher, PKPRequest $request, $submissionFile, int $stageId): void {
+		$submissionId = $submissionFile->getData('submissionId');
+
+		$conversionUrl = $dispatcher->url($request, ROUTE_PAGE, null, 'xmlEditor', 'convertJatsToJats', null,
+			array(
+				'submissionId' => $submissionId,
+				'submissionFileId' => $submissionFile->getData('id'),
+				'stageId' => $stageId
+			)
+		);
+
+		$redirectUrl = $dispatcher->url($request, ROUTE_PAGE, null, 'workflow', 'access', $submissionId);
+
+		$row->addAction(new LinkAction(
+			'xmleditor_jats_convert',
+			new PostAndRedirectAction($conversionUrl, $redirectUrl),
+			__('plugins.generic.xmlEditor.links.convertJatsToJats'),
+			null
+		));
+	}
+
+	/**
+	 * @copydoc Plugin::getActions()
+	 */
+	public function getActions($request, $verb) {
+		$router = $request->getRouter();
+		import('lib.pkp.classes.linkAction.request.AjaxModal');
+		return array_merge(
+			$this->getEnabled()?array(
+				new LinkAction(
+					'settings',
+					new AjaxModal(
+						$router->url($request, null, null, 'manage', null, array('verb' => 'settings', 'plugin' => $this->getName(), 'category' => 'generic')),
+						$this->getDisplayName()
+					),
+					__('manager.plugins.settings'),
+					null
+				),
+			):array(),
+			parent::getActions($request, $verb)
+		);
+	}
+
+	/**
+	 * @copydoc Plugin::manage()
+	 */
+	public function manage($args, $request) {
+		switch ($request->getUserVar('verb')) {
+			case 'settings':
+				$context = $request->getContext();
+
+				AppLocale::requireComponents(LOCALE_COMPONENT_APP_COMMON,  LOCALE_COMPONENT_PKP_MANAGER);
+				$templateMgr = TemplateManager::getManager($request);
+				$templateMgr->registerPlugin('function', 'plugin_url', array($this, 'smartyPluginUrl'));
+
+				$this->import('XmlEditorSettingsForm');
+				$form = new XmlEditorSettingsForm($this, $context->getId());
+
+				if ($request->getUserVar('save')) {
+					$form->readInputData();
+					if ($form->validate()) {
+						$form->execute();
+						return new JSONMessage(true);
+					}
+				} else {
+					$form->initData();
+				}
+				return new JSONMessage(true, $form->fetch($request));
+		}
+		return parent::manage($args, $request);
 	}
 }

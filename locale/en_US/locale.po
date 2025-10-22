@@ -55,3 +55,39 @@ msgstr "Error converting Word document"
 
 msgid "plugins.generic.xmlEditor.conversion.processing"
 msgstr "Converting document..."
+
+msgid "plugins.generic.xmlEditor.links.convertJatsToJats"
+msgstr "Create JATS XML"
+
+msgid "plugins.generic.xmlEditor.jatsConversion.success"
+msgstr "JATS XML converted successfully"
+
+msgid "plugins.generic.xmlEditor.jatsConversion.error"
+msgstr "Error converting JATS XML"
+
+msgid "plugins.generic.xmlEditor.jatsConversion.processing"
+msgstr "Converting JATS XML..."
+
+msgid "plugins.generic.xmlEditor.settings.description"
+msgstr "Configure JATS XML converter options for this journal"
+
+msgid "plugins.generic.xmlEditor.settings.jatsConverterOptions"
+msgstr "JATS Converter Options"
+
+msgid "plugins.generic.xmlEditor.settings.conversionOptions"
+msgstr "Conversion Options"
+
+msgid "plugins.generic.xmlEditor.settings.reorderReferences"
+msgstr "Reorder References"
+
+msgid "plugins.generic.xmlEditor.settings.splitReferences"
+msgstr "Split References"
+
+msgid "plugins.generic.xmlEditor.settings.processBrackets"
+msgstr "Process Brackets"
+
+msgid "plugins.generic.xmlEditor.settings.referenceCheck"
+msgstr "Reference Check"
+
+msgid "plugins.generic.xmlEditor.settings.detailed"
+msgstr "Detailed Output"

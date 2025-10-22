@@ -1,0 +1,7 @@
+{
+    "name": "withanage/jats-converter-wrapper",
+    "description": "JATS converter wrapper for XML Editor plugin",
+    "require": {
+        "withanage/jats-converter": "^1.0"
+    }
+}

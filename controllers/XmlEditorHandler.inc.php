@@ -15,8 +15,10 @@
 
 import('classes.handler.Handler');
 require_once __DIR__ . "/../lib/docxToJats/vendor/autoload.php";
+require_once __DIR__ . "/../lib/jatsConverter/vendor/autoload.php";
 use docx2jats\DOCXArchive;
 use docx2jats\jats\Document;
+use Withanage\JatsConverter\Factory\JatsConverterFactory;
 
 class XmlEditorHandler extends Handler {
 	/** @var Submission * */
@@ -35,7 +37,7 @@ class XmlEditorHandler extends Handler {
 		$this->_plugin = PluginRegistry::getPlugin('generic', XMLEDITOR_PLUGIN_NAME);
 		$this->addRoleAssignment(
 			array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR, ROLE_ID_ASSISTANT, ROLE_ID_REVIEWER, ROLE_ID_AUTHOR),
-			array('editor', 'json', 'media', 'convertWordToXml')
+			array('editor', 'json', 'media', 'convertWordToXml', 'convertJatsToJats')
 		);
 	}
 
@@ -500,5 +502,236 @@ class XmlEditorHandler extends Handler {
 
 		Services::get('submissionFile')->add($newSupplementaryFile, $request);
 		unlink($tmpfnameSuppl);
+	}
+
+	/**
+	 * Convert JATS XML to JATS XML using jats-converter
+	 * @param $args array
+	 * @param $request PKPRequest
+	 * @return JSONMessage
+	 */
+	public function convertJatsToJats($args, $request) {
+		$submissionFileId = (int)$request->getUserVar('submissionFileId');
+		$submissionId = (int)$request->getUserVar('submissionId');
+		$stageId = (int)$request->getUserVar('stageId');
+
+		$submissionFile = Services::get('submissionFile')->get($submissionFileId);
+
+		if (!$submissionFile) {
+			return new JSONMessage(false, __('plugins.generic.xmlEditor.jatsConversion.error'));
+		}
+
+		$submission = $this->getAuthorizedContextObject(ASSOC_TYPE_SUBMISSION);
+		$context = $request->getContext();
+
+		// Verify file is an XML file
+		$mimeType = $submissionFile->getData('mimetype');
+		if (!in_array(strtolower($mimeType), ['text/xml', 'application/xml'])) {
+			return new JSONMessage(false, __('plugins.generic.xmlEditor.jatsConversion.error'));
+		}
+
+		// Get plugin settings
+		$plugin = $this->getPlugin();
+		$reorderReferences = (bool)$plugin->getSetting($context->getId(), 'reorderReferences');
+		$splitReferences = (bool)$plugin->getSetting($context->getId(), 'splitReferences');
+		$processBrackets = (bool)$plugin->getSetting($context->getId(), 'processBrackets');
+		$referenceCheck = (bool)$plugin->getSetting($context->getId(), 'referenceCheck');
+		$detailed = (bool)$plugin->getSetting($context->getId(), 'detailed');
+
+		try {
+			// Get file path
+			import('lib.pkp.classes.file.PrivateFileManager');
+			$fileManager = new PrivateFileManager();
+			$filePath = $fileManager->getBasePath() . '/' . $submissionFile->getData('path');
+
+			// Create temporary input file
+			$tmpInputFile = tempnam(sys_get_temp_dir(), 'jats_input_');
+			copy($filePath, $tmpInputFile);
+
+			// Create temporary output file
+			$tmpOutputFile = tempnam(sys_get_temp_dir(), 'jats_output_');
+
+			// Initialize log collection
+			$logMessages = [];
+			$logMessages[] = "JATS XML Conversion Log";
+			$logMessages[] = "Date: " . date('Y-m-d H:i:s');
+			$logMessages[] = "Submission ID: " . $submissionId;
+			$logMessages[] = "Original File: " . $submissionFile->getLocalizedData('name');
+			$logMessages[] = "\nConversion Settings:";
+			$logMessages[] = "- Reorder References: " . ($reorderReferences ? 'Yes' : 'No');
+			$logMessages[] = "- Split References: " . ($splitReferences ? 'Yes' : 'No');
+			$logMessages[] = "- Process Brackets: " . ($processBrackets ? 'Yes' : 'No');
+			$logMessages[] = "- Reference Check: " . ($referenceCheck ? 'Yes' : 'No');
+			$logMessages[] = "- Detailed Output: " . ($detailed ? 'Yes' : 'No');
+			$logMessages[] = "\n" . str_repeat('-', 80) . "\n";
+
+			// Configure JATS converter using factory
+			$converterFactory = new JatsConverterFactory();
+			$converter = $converterFactory->create(
+				'1.3',                          // schema version
+				null,                            // schema path (use default)
+				null,                            // parser (use default)
+				null,                            // reference builder (use default)
+				false,                           // enable logging (use our own logging via progress callback)
+				$splitReferences,                // split references
+				$reorderReferences,              // reorder references
+				false,                           // enhance DOIs (disabled by default)
+				'crossref',                      // DOI source
+				null,                            // DOI email
+				[],                              // DOI config
+				$processBrackets                 // process bracketed citations
+			);
+
+			// Set reference check separately (not in factory)
+			if ($referenceCheck) {
+				$converter->setCheckReferences(true);
+				$logMessages[] = "Enabled: Reference Check";
+			}
+
+			// Enable verbose mode for detailed output
+			if ($detailed) {
+				$converter->setVerbose(true);
+			}
+
+			// Log enabled features
+			if ($reorderReferences) {
+				$logMessages[] = "Enabled: Reorder References";
+			}
+			if ($splitReferences) {
+				$logMessages[] = "Enabled: Split References";
+			}
+			if ($processBrackets) {
+				$logMessages[] = "Enabled: Process Bracketed Citations";
+			}
+			if ($detailed) {
+				$logMessages[] = "Enabled: Verbose/Detailed Output";
+			}
+
+			// Set progress callback for logging
+			$converter->onProgress(function($message) use (&$logMessages) {
+				$logMessages[] = "[Progress] " . $message;
+			});
+
+			$logMessages[] = "\nStarting conversion...\n";
+
+			// Perform conversion
+			$result = $converter->convert($tmpInputFile, $tmpOutputFile);
+
+			// Log results
+			if ($result->isSuccess()) {
+				$logMessages[] = "\n✓ Conversion completed successfully!";
+				foreach ($result->getMessages() as $message) {
+					$logMessages[] = "[Info] " . $message;
+				}
+			} else {
+				$logMessages[] = "\n✗ Conversion failed!";
+				foreach ($result->getMessages() as $message) {
+					$logMessages[] = "[Error] " . $message;
+				}
+				throw new Exception("JATS conversion failed");
+			}
+
+			// Save converted XML to new submission file
+			$submissionDir = Services::get('submissionFile')->getSubmissionDir($context->getData('id'), $submissionId);
+			$newFileId = Services::get('file')->add(
+				$tmpOutputFile,
+				$submissionDir . DIRECTORY_SEPARATOR . uniqid() . '_converted.xml'
+			);
+
+			// Create new file name
+			$newName = [];
+			foreach ($submissionFile->getData('name') as $localeKey => $name) {
+				$baseName = pathinfo($name, PATHINFO_FILENAME);
+				$newName[$localeKey] = $baseName . '_jats_converted.xml';
+			}
+
+			// Create new submission file object
+			$submissionFileDao = DAORegistry::getDAO('SubmissionFileDAO');
+			$newSubmissionFile = $submissionFileDao->newDataObject();
+			$newSubmissionFile->setAllData([
+				'fileId' => $newFileId,
+				'assocType' => $submissionFile->getData('assocType'),
+				'assocId' => $submissionFile->getData('assocId'),
+				'fileStage' => $submissionFile->getData('fileStage'),
+				'mimetype' => 'application/xml',
+				'locale' => $submissionFile->getData('locale'),
+				'genreId' => $submissionFile->getData('genreId'),
+				'name' => $newName,
+				'submissionId' => $submissionId,
+			]);
+
+			$newSubmissionFile = Services::get('submissionFile')->add($newSubmissionFile, $request);
+
+			// Create and save log file
+			$logFileName = pathinfo($submissionFile->getLocalizedData('name'), PATHINFO_FILENAME) . '_conversion_log.txt';
+			$logContent = implode("\n", $logMessages);
+			$tmpLogFile = tempnam(sys_get_temp_dir(), 'jats_log_');
+			file_put_contents($tmpLogFile, $logContent);
+
+			$logFileId = Services::get('file')->add(
+				$tmpLogFile,
+				$submissionDir . DIRECTORY_SEPARATOR . uniqid() . '_log.txt'
+			);
+
+			// Create log file as dependent file
+			$logSubmissionFile = $submissionFileDao->newDataObject();
+			$logSubmissionFile->setAllData([
+				'fileId' => $logFileId,
+				'assocId' => $newSubmissionFile->getId(),
+				'assocType' => ASSOC_TYPE_SUBMISSION_FILE,
+				'fileStage' => SUBMISSION_FILE_DEPENDENT,
+				'submissionId' => $submissionId,
+				'genreId' => $submissionFile->getData('genreId'),
+				'name' => array_fill_keys(array_keys($newName), $logFileName)
+			]);
+
+			Services::get('submissionFile')->add($logSubmissionFile, $request);
+
+			// Clean up temporary files
+			unlink($tmpInputFile);
+			unlink($tmpOutputFile);
+			unlink($tmpLogFile);
+
+			return new JSONMessage(true, [
+				'submissionId' => $submissionId,
+				'fileId' => $newSubmissionFile->getData('fileId'),
+				'fileStage' => $newSubmissionFile->getData('fileStage'),
+			]);
+
+		} catch (Exception $e) {
+			error_log('JATS Converter error: ' . $e->getMessage());
+
+			// Save error log even on failure
+			if (isset($logMessages) && isset($submissionDir)) {
+				$logMessages[] = "\n✗ FATAL ERROR: " . $e->getMessage();
+				$logMessages[] = "\nStack trace:";
+				$logMessages[] = $e->getTraceAsString();
+
+				$logFileName = 'jats_conversion_error_log.txt';
+				$logContent = implode("\n", $logMessages);
+				$tmpLogFile = tempnam(sys_get_temp_dir(), 'jats_error_log_');
+				file_put_contents($tmpLogFile, $logContent);
+
+				try {
+					Services::get('file')->add(
+						$tmpLogFile,
+						$submissionDir . DIRECTORY_SEPARATOR . uniqid() . '_error_log.txt'
+					);
+				} catch (Exception $logException) {
+					// Ignore log save errors
+				}
+				unlink($tmpLogFile);
+			}
+
+			// Clean up temporary files if they exist
+			if (isset($tmpInputFile) && file_exists($tmpInputFile)) {
+				unlink($tmpInputFile);
+			}
+			if (isset($tmpOutputFile) && file_exists($tmpOutputFile)) {
+				unlink($tmpOutputFile);
+			}
+
+			return new JSONMessage(false, __('plugins.generic.xmlEditor.jatsConversion.error'));
+		}
 	}
 }

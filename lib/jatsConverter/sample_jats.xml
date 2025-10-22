@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD v1.3 20210610//EN" "JATS-archivearticle1-3.dtd">
+<article xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML" article-type="research-article">
+  <front>
+    <article-meta>
+      <title-group>
+        <article-title>Sample JATS Article for Testing</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Smith</surname>
+            <given-names>John</given-names>
+          </name>
+        </contrib>
+      </contrib-group>
+      <abstract>
+        <p>This is a sample JATS XML document for testing the converter.</p>
+      </abstract>
+    </article-meta>
+  </front>
+  <body>
+    <sec>
+      <title>Introduction</title>
+      <p>This is the introduction section with some text. We cite a reference here [1] and another one [2,3].</p>
+    </sec>
+    <sec>
+      <title>Methods</title>
+      <p>This section describes the methodology. Multiple citations can appear together [4] [5].</p>
+    </sec>
+    <sec>
+      <title>Results</title>
+      <p>The results show interesting findings [1000]. More results here with citation [6].</p>
+    </sec>
+    <sec>
+      <title>Discussion</title>
+      <p>In this discussion, we reference previous work [7-9].</p>
+    </sec>
+  </body>
+  <back>
+    <ref-list>
+      <ref id="ref1">
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Doe</surname>
+              <given-names>J</given-names>
+            </name>
+          </person-group>
+          <article-title>An important study</article-title>
+          <source>Journal of Science</source>
+          <year>2020</year>
+          <volume>10</volume>
+          <fpage>123</fpage>
+          <lpage>456</lpage>
+        </element-citation>
+      </ref>
+      <ref id="ref2">
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Jones</surname>
+              <given-names>A</given-names>
+            </name>
+          </person-group>
+          <article-title>Another study</article-title>
+          <source>Science Today</source>
+          <year>2019</year>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
