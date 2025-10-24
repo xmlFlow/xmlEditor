@@ -21,7 +21,8 @@ class DAR {
 
 		$assets = array();
 		$manuscript = Services::get('file')->fs->read($submissionFile->getData('path'));
-		$manuscript = $dar->createManuscript($manuscript);
+		$context = $request->getContext();
+		$manuscript = $dar->createManuscript($manuscript, $context);
 
 		$contents = $dar->createManifest($manuscript, $assets);
 		$mediaInfos = $dar->createMediaInfo($request, $assets);
@@ -50,7 +51,7 @@ class DAR {
 	}
 
 
-	public function createManuscript($manuscript) {
+	public function createManuscript($manuscript, $context = null) {
 		$domImpl = new DOMImplementation();
 		$dtd = $domImpl->createDocumentType("article", "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD v1.2 20190208//EN", "JATS-archivearticle1.dtd");
 		$editableManuscriptDom = $domImpl->createDocument("", "", $dtd);
@@ -81,7 +82,7 @@ class DAR {
 
 		$editableManuscriptDom->appendChild($editableManuscriptDom->article);
 
-		$this->createEmptyMetadata($editableManuscriptDom);
+		$this->createEmptyMetadata($editableManuscriptDom, $context);
 
 		$manuscriptBody = $xpath->query("/article/body");
 		foreach ($manuscriptBody as $content) {
@@ -212,10 +213,77 @@ class DAR {
 
 	/**
 	 * @param DOMDocument $dom
+	 * @param $context Context|null
 	 */
-	protected function createEmptyMetadata(DOMDocument $dom): void {
+	protected function createEmptyMetadata(DOMDocument $dom, $context = null): void {
 		$dom->front = $dom->createElement('front');
 		$dom->article->appendChild($dom->front);
+
+		// Add journal metadata if context is available
+		if ($context) {
+			$dom->journalMeta = $dom->createElement('journal-meta');
+			$dom->front->appendChild($dom->journalMeta);
+
+			// Journal ID
+			$journalPath = $context->getData('urlPath') ?: $context->getPath();
+			if ($journalPath) {
+				$journalId = $dom->createElement('journal-id', htmlspecialchars($journalPath));
+				$journalId->setAttribute('journal-id-type', 'ojs');
+				$dom->journalMeta->appendChild($journalId);
+			}
+
+			// Journal title group
+			$journalTitleGroup = $dom->createElement('journal-title-group');
+			$dom->journalMeta->appendChild($journalTitleGroup);
+
+			// Primary journal title
+			$primaryLocale = $context->getPrimaryLocale();
+			$journalName = $context->getName($primaryLocale);
+			if ($journalName) {
+				$journalTitle = $dom->createElement('journal-title', htmlspecialchars($journalName));
+				$journalTitle->setAttribute('xml:lang', substr($primaryLocale, 0, 2));
+				$journalTitleGroup->appendChild($journalTitle);
+
+				// Add translated journal titles
+				$allNames = $context->getName(null);
+				if (is_array($allNames)) {
+					foreach ($allNames as $locale => $title) {
+						if ($locale != $primaryLocale && !empty($title)) {
+							$transGroup = $dom->createElement('trans-title-group');
+							$transGroup->setAttribute('xml:lang', substr($locale, 0, 2));
+							$transTitle = $dom->createElement('trans-title', htmlspecialchars($title));
+							$transGroup->appendChild($transTitle);
+							$journalTitleGroup->appendChild($transGroup);
+						}
+					}
+				}
+			}
+
+			// ISSN - print
+			$printIssn = $context->getSetting('printIssn');
+			if (!empty($printIssn)) {
+				$issnPrint = $dom->createElement('issn', htmlspecialchars($printIssn));
+				$issnPrint->setAttribute('pub-type', 'ppub');
+				$dom->journalMeta->appendChild($issnPrint);
+			}
+
+			// ISSN - online
+			$onlineIssn = $context->getSetting('onlineIssn');
+			if (!empty($onlineIssn)) {
+				$issnOnline = $dom->createElement('issn', htmlspecialchars($onlineIssn));
+				$issnOnline->setAttribute('pub-type', 'epub');
+				$dom->journalMeta->appendChild($issnOnline);
+			}
+
+			// Publisher
+			$publisherInstitution = $context->getSetting('publisherInstitution');
+			if (!empty($publisherInstitution)) {
+				$publisher = $dom->createElement('publisher');
+				$publisherName = $dom->createElement('publisher-name', htmlspecialchars($publisherInstitution));
+				$publisher->appendChild($publisherName);
+				$dom->journalMeta->appendChild($publisher);
+			}
+		}
 
 		$dom->articleMeta = $dom->createElement('article-meta');
 		$dom->front->appendChild($dom->articleMeta);
